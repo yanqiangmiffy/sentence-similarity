@@ -3,3 +3,5 @@
 .git/
 .ipynb_checkpoints/
 code/logs
+model/
+__pycache__/

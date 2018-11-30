@@ -9,7 +9,11 @@
 """
 from data_loader import load_atec
 from collections import Counter
-train=load_atec()
+from keras.preprocessing.sequence import pad_sequences
+import numpy as np
+from gensim.models import Word2Vec
+
+train = load_atec()
 
 
 def select_best_length(limit_ratio=0.95):
@@ -21,7 +25,7 @@ def select_best_length(limit_ratio=0.95):
     len_list = []
     max_length = 0
     cover_rate = 0.0
-    for q1,q2 in zip(train['q1'],train['q2']):
+    for q1, q2 in zip(train['q1'], train['q2']):
         len_list.append(len(q1))
         len_list.append(len(q2))
     all_sent = len(len_list)
@@ -46,21 +50,79 @@ def build_data():
     构建数据集
     :return:
     """
-    sample_x_left = train.q1.apply(lambda x:[char for char in x if char]).tolist()
-    sample_x_right = train.q1.apply(lambda x:[char for char in x if char]).tolist()
+    sample_x_left = train.q1.apply(lambda x: [char for char in x if char]).tolist()
+    sample_x_right = train.q1.apply(lambda x: [char for char in x if char]).tolist()
     vocabs = {'UNK'}
-    for x_left,x_right in zip(sample_x_left,sample_x_right):
-        for char in x_left+x_right:
+    for x_left, x_right in zip(sample_x_left, sample_x_right):
+        for char in x_left + x_right:
             vocabs.add(char)
 
     sample_x = [sample_x_left, sample_x_right]
-    print(sample_x[0][0])
     sample_y = train.label.tolist()
     print(len(sample_x_left), len(sample_x_right))
     datas = [sample_x, sample_y]
     word_dict = {wd: index for index, wd in enumerate(list(vocabs))}
-    vocab_path='model/vocab.txt'
-    with open(vocab_path,'w',encoding='utf-8') as f:
+    vocab_path = 'model/vocab.txt'
+    with open(vocab_path, 'w', encoding='utf-8') as f:
         f.write('\n'.join(list(vocabs)))
     return datas, word_dict
-build_data()
+
+
+def convert_data(datas, word_dict, MAX_LENGTH):
+    """
+    将数据转换成keras所能处理的格式
+    :return: 
+    """
+    sample_x = datas[0]
+    sample_y = datas[1]
+    sample_x_left = sample_x[0]
+    sample_x_right = sample_x[1]
+    left_x_train = [[word_dict[char] for char in data] for data in sample_x_left]
+    right_x_train = [[word_dict[char] for char in data] for data in sample_x_right]
+    y_train = [int(i) for i in sample_y]
+    left_x_train = pad_sequences(left_x_train, MAX_LENGTH, padding='pre')
+    right_x_train = pad_sequences(right_x_train, MAX_LENGTH, padding='pre')
+    y_train = np.expand_dims(y_train, 2)
+    return left_x_train, right_x_train, y_train
+
+
+def train_w2v(datas):
+    """
+    训练词向量
+    :return:
+    """
+    sents = datas[0][0] + datas[0][1]
+    model = Word2Vec(sentences=sents, size=300, min_count=2)
+    model.wv.save_word2vec_format('model/token_vec_300.bin', binary=False)
+
+def load_pretrained_embedding():
+    """
+    加载预训练的词向量
+    :return:
+    """
+    embedding_file = 'model/token_vec_300.bin'
+    embeddings_dict = {}
+    with open(embedding_file, 'r', encoding='utf-8') as f:
+        for line in f:
+            values = line.strip().split(' ')
+            if len(values) < 300:
+                continue
+            word = values[0]
+            coefs = np.asarray(values[1:], dtype='float32')
+            embeddings_dict[word] = coefs
+    print('Found %s word vectors.' % len(embeddings_dict))
+    return embeddings_dict
+
+
+def build_embedding_matrix(word_dict, VOCAB_SIZE, EMBEDDING_DIM):
+    """
+    加载词向量矩阵
+    :return:
+    """
+    embedding_dict = load_pretrained_embedding()
+    embedding_matrix = np.zeros((VOCAB_SIZE + 1, EMBEDDING_DIM))
+    for word, i in word_dict.items():
+        embedding_vector = embedding_dict.get(word)
+        if embedding_vector is not None:
+            embedding_matrix[i] = embedding_vector
+    return embedding_matrix
