@@ -1,7 +1,9 @@
 # sentence-similarity
 问题句子相似度计算，即给定客服里用户描述的两句话，用算法来判断是否表示了相同的语义。
 ## 句子相似度判定
-今年和去年前后相继出现了多个关于句子相似度判定的比赛，即得定两个句子，用算法判断是否表示了相同的语义或者意思。下面是比赛的列表：
+今年和去年前后相继出现了多个关于句子相似度判定的比赛，即得定两个句子，用算法判断是否表示了相同的语义或者意思。
+其中第1、4、5这个3个比赛数据集比较像，2、3 的数据集格式比较像，本仓库基于2、3数据集做实验
+下面是比赛的列表：
 - 1 [Quora Question Pairs](https://www.kaggle.com/c/quora-question-pairs)
 
 > The goal of this competition is to predict which of the provided pairs of questions contain two questions with the same meaning. 
