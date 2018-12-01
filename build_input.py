@@ -114,12 +114,11 @@ def load_pretrained_embedding():
     return embeddings_dict
 
 
-def build_embedding_matrix(word_dict, VOCAB_SIZE, EMBEDDING_DIM):
+def build_embedding_matrix(word_dict, embedding_dict,VOCAB_SIZE, EMBEDDING_DIM):
     """
     加载词向量矩阵
     :return:
     """
-    embedding_dict = load_pretrained_embedding()
     embedding_matrix = np.zeros((VOCAB_SIZE + 1, EMBEDDING_DIM))
     for word, i in word_dict.items():
         embedding_vector = embedding_dict.get(word)

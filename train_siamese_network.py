@@ -28,7 +28,8 @@ datas, word_dict = build_data()
 VOCAB_SIZE = len(word_dict)
 left_x_train, right_x_train, y_train = convert_data(datas, word_dict, MAX_LENGTH)
 embeddings_dict = load_pretrained_embedding()
-embedding_matrix = build_embedding_matrix(word_dict, VOCAB_SIZE, EMBEDDING_DIM)
+embedding_matrix = build_embedding_matrix(word_dict, embeddings_dict,
+                                          VOCAB_SIZE, EMBEDDING_DIM)
 
 
 def create_base_network(input_shape):
