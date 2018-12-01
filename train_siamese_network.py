@@ -53,7 +53,7 @@ def bilstm_siamese_model():
                                 weights=[embedding_matrix],
                                 input_length=MAX_LENGTH,
                                 trainable=False,
-                                mask_zero=False)
+                                mask_zero=True)
     left_input = Input(shape=(MAX_LENGTH,), dtype='float32')
     right_input = Input(shape=(MAX_LENGTH,), dtype='float32')
     encoded_left = embedding_layer(left_input)
