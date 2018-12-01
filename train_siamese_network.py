@@ -96,6 +96,8 @@ def draw_train(history):
 def train_model():
     '''训练模型'''
     model = bilstm_siamese_model()
+    from keras.utils import plot_model
+    plot_model(model, to_file='model.png')
     history = model.fit(
         x=[left_x_train, right_x_train],
         y=y_train,
@@ -103,6 +105,7 @@ def train_model():
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
     )
+
     draw_train(history)
     model.save(model_path)
     return model

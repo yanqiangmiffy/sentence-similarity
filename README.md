@@ -39,3 +39,9 @@
 
 >  [数据集](https://ai.ppdai.com/mirror/goToMirrorDetail?mirrorId=1)经过脱敏处理，问题由数字标示
 >  为保护用户隐私并保证比赛的公平公正，所有原始文本信息都被编码成单字ID序列和词语ID序列。单字包含单个汉字、英文字母、标点及空格等；词语包含切词后的中> 文词语、英文单词、标点及空格等。单字ID和词语ID存在于两个不同的命名空间，即词语中的单字词或者标点，和单字中的相同字符及相同标点不一定有同一个ID。其> > 中，单字序列以L开头，词语序列以W开头。
+
+## Siamese Network
+
+MaLSTM’s architecture — Similar color means the weights are shared between the same-colored elements
+
+![](https://cdn-images-1.medium.com/max/800/1*SZM2gDnr-OTx9ytVKQEuOg.png)
