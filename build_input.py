@@ -92,9 +92,8 @@ def train_w2v(datas):
     :return:
     """
     sents = datas[0][0] + datas[0][1]
-    model = Word2Vec(sentences=sents, size=300, min_count=2)
+    model = Word2Vec(sentences=sents, size=300, min_count=1)
     model.wv.save_word2vec_format('model/token_vec_300.bin', binary=False)
-
 def load_pretrained_embedding():
     """
     加载预训练的词向量

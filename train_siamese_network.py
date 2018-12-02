@@ -25,6 +25,7 @@ model_path = 'model/tokenvec_bilstm2_siamese_model.h5'
 
 MAX_LENGTH = select_best_length()
 datas, word_dict = build_data()
+train_w2v(datas)
 VOCAB_SIZE = len(word_dict)
 left_x_train, right_x_train, y_train = convert_data(datas, word_dict, MAX_LENGTH)
 embeddings_dict = load_pretrained_embedding()
@@ -97,7 +98,7 @@ def train_model():
     '''训练模型'''
     model = bilstm_siamese_model()
     from keras.utils import plot_model
-    plot_model(model, to_file='model.png')
+    plot_model(model, to_file='model.png', show_shapes=True)
     history = model.fit(
         x=[left_x_train, right_x_train],
         y=y_train,
