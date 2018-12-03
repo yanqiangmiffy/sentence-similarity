@@ -91,7 +91,7 @@ def draw_train(history):
     plt.ylabel('Loss')
     plt.xlabel('Epoch')
     plt.legend(['Train', 'Test'], loc='upper left')
-    plt.savefig("model/result.png")
+    plt.savefig("model/result_atec.png")
     plt.show()
 
 
