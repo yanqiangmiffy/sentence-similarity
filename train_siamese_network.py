@@ -25,7 +25,7 @@ model_path = 'model/tokenvec_bilstm2_siamese_model.h5'
 
 MAX_LENGTH = select_best_length()
 datas, word_dict = build_data()
-train_w2v(datas)
+# train_w2v(datas)
 VOCAB_SIZE = len(word_dict)
 left_x_train, right_x_train, y_train = convert_data(datas, word_dict, MAX_LENGTH)
 embeddings_dict = load_pretrained_embedding()
@@ -56,8 +56,8 @@ def bilstm_siamese_model():
                                 input_length=MAX_LENGTH,
                                 trainable=False,
                                 mask_zero=True)
-    left_input = Input(shape=(MAX_LENGTH,), dtype='float32')
-    right_input = Input(shape=(MAX_LENGTH,), dtype='float32')
+    left_input = Input(shape=(MAX_LENGTH,), dtype='float32',name="left_x")
+    right_input = Input(shape=(MAX_LENGTH,), dtype='float32',name='right_x')
     encoded_left = embedding_layer(left_input)
     encoded_right = embedding_layer(right_input)
     shared_lstm = create_base_network(input_shape=(MAX_LENGTH, EMBEDDING_DIM))
