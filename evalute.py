@@ -7,7 +7,7 @@
 @Software: PyCharm 
 @Description: 加载训练好的模型进行预测
 """
-
+from data_loader import *
 from keras.models import load_model
 from keras import backend as K
 import numpy as np
@@ -29,14 +29,21 @@ EPOCHS = 20
 model_path = 'model/tokenvec_bilstm2_siamese_model.h5'
 # 数据准备
 
-MAX_LENGTH = select_best_length()
-datas, word_dict = build_data()
-train_w2v(datas)
+# 数据准备
+task = 'ccks'
+if task == 'atec':
+    train = load_atec()
+else:
+    train, _, _ = load_ccks()
+
+MAX_LENGTH = select_best_length(train)
+datas, word_dict = build_data(train)
+# train_w2v(datas)
 VOCAB_SIZE = len(word_dict)
-left_x_train, right_x_train, y_train = convert_data(datas, word_dict, MAX_LENGTH)
 embeddings_dict = load_pretrained_embedding()
 embedding_matrix = build_embedding_matrix(word_dict, embeddings_dict,
                                           VOCAB_SIZE, EMBEDDING_DIM)
+left_x_train, right_x_train, y_train = convert_data(datas, word_dict, MAX_LENGTH)
 
 
 def exponent_neg_manhattan_distance(sent_left, sent_right):

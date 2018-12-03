@@ -12,25 +12,32 @@ from keras.layers import Input, Embedding, LSTM, Dropout, Lambda, Bidirectional
 import matplotlib.pyplot as plt
 import os
 from collections import Counter
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from build_input import *
-
+from data_loader import *
 
 # 参数设置
 BATCH_SIZE = 512
 EMBEDDING_DIM = 300
 EPOCHS = 20
 model_path = 'model/tokenvec_bilstm2_siamese_model.h5'
-# 数据准备
 
-MAX_LENGTH = select_best_length()
-datas, word_dict = build_data()
-# train_w2v(datas)
+# 数据准备
+task = 'atec'
+if task == 'atec':
+    train = load_atec()
+else :
+    train, _, _ = load_ccks()
+
+MAX_LENGTH = select_best_length(train)
+datas, word_dict = build_data(train)
+train_w2v(datas)
 VOCAB_SIZE = len(word_dict)
-left_x_train, right_x_train, y_train = convert_data(datas, word_dict, MAX_LENGTH)
 embeddings_dict = load_pretrained_embedding()
 embedding_matrix = build_embedding_matrix(word_dict, embeddings_dict,
                                           VOCAB_SIZE, EMBEDDING_DIM)
+left_x_train, right_x_train, y_train = convert_data(datas, word_dict, MAX_LENGTH)
 
 
 def create_base_network(input_shape):
@@ -56,8 +63,8 @@ def bilstm_siamese_model():
                                 input_length=MAX_LENGTH,
                                 trainable=False,
                                 mask_zero=True)
-    left_input = Input(shape=(MAX_LENGTH,), dtype='float32',name="left_x")
-    right_input = Input(shape=(MAX_LENGTH,), dtype='float32',name='right_x')
+    left_input = Input(shape=(MAX_LENGTH,), dtype='float32', name="left_x")
+    right_input = Input(shape=(MAX_LENGTH,), dtype='float32', name='right_x')
     encoded_left = embedding_layer(left_input)
     encoded_right = embedding_layer(right_input)
     shared_lstm = create_base_network(input_shape=(MAX_LENGTH, EMBEDDING_DIM))

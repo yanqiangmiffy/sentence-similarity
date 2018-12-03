@@ -7,7 +7,6 @@
 @Software: PyCharm 
 @Description: 构建模型的输入
 """
-from data_loader import *
 from collections import Counter
 from keras.preprocessing.sequence import pad_sequences
 import numpy as np
@@ -16,10 +15,10 @@ from gensim.models import Word2Vec
 # train = load_atec()
 
 
-train, dev, test=load_ccks()
+# train, dev, test=load_ccks()
 
 
-def select_best_length(limit_ratio=0.95):
+def select_best_length(train,limit_ratio=0.95):
     """
     根据数据集的句子长度，选择最佳的样本max-length
     :param limit_ratio:句子长度覆盖度，默认覆盖95%以上的句子
@@ -51,7 +50,7 @@ def select_best_length(limit_ratio=0.95):
 # select_best_length()
 
 
-def build_data():
+def build_data(train):
     """
     构建数据集
     :return:
