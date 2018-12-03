@@ -60,5 +60,9 @@ def exponent_neg_manhattan_distance(sent_left, sent_right):
 在ccks任务上：`acc: 0.8372 - val_loss: 0.4316 - val_acc: 0.8047`
 
 在atec任务上：`loss: 0.3302 - acc: 0.8570 - val_loss: 0.5244 - val_acc: 0.7702`
-## 参考资料
+## 更多资料
 1. [How to predict Quora Question Pairs using Siamese Manhattan LSTM](https://medium.com/mlreview/implementing-malstm-on-kaggles-quora-question-pairs-competition-8b31b0b16a07)
+2. [nlp中文本相似度计算问题](https://blog.csdn.net/u014248127/article/details/80736044)
+3. [语义相似度计算各种算法实现汇总](https://github.com/yanleping/similarity)
+4. [距离度量以及python实现(一)](https://www.cnblogs.com/denny402/p/7027954.html)
+5. [从Kaggle赛题: Quora Question Pairs 看文本相似性/相关性](https://zhuanlan.zhihu.com/p/35093355)
