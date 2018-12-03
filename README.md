@@ -45,3 +45,8 @@
 MaLSTM’s architecture — Similar color means the weights are shared between the same-colored elements
 
 ![](https://cdn-images-1.medium.com/max/800/1*SZM2gDnr-OTx9ytVKQEuOg.png)
+
+- 词向量是基于字符级别的，在我印象里一般是字符级的效果比较好
+- 
+## 参考资料
+1. [How to predict Quora Question Pairs using Siamese Manhattan LSTM](https://medium.com/mlreview/implementing-malstm-on-kaggles-quora-question-pairs-competition-8b31b0b16a07)

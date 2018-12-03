@@ -12,9 +12,9 @@ from keras.layers import Input, Embedding, LSTM, Dropout, Lambda, Bidirectional
 import matplotlib.pyplot as plt
 import os
 from collections import Counter
-
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 from build_input import *
+
 
 # 参数设置
 BATCH_SIZE = 512
@@ -91,6 +91,7 @@ def draw_train(history):
     plt.ylabel('Loss')
     plt.xlabel('Epoch')
     plt.legend(['Train', 'Test'], loc='upper left')
+    plt.savefig("model/result.png")
     plt.show()
 
 
@@ -98,7 +99,7 @@ def train_model():
     '''训练模型'''
     model = bilstm_siamese_model()
     from keras.utils import plot_model
-    plot_model(model, to_file='model.png', show_shapes=True)
+    plot_model(model, to_file='model/model.png', show_shapes=True)
     history = model.fit(
         x=[left_x_train, right_x_train],
         y=y_train,

@@ -7,13 +7,16 @@
 @Software: PyCharm 
 @Description: 构建模型的输入
 """
-from data_loader import load_atec
+from data_loader import *
 from collections import Counter
 from keras.preprocessing.sequence import pad_sequences
 import numpy as np
 from gensim.models import Word2Vec
 
-train = load_atec()
+# train = load_atec()
+
+
+train, dev, test=load_ccks()
 
 
 def select_best_length(limit_ratio=0.95):
@@ -45,13 +48,16 @@ def select_best_length(limit_ratio=0.95):
     return max_length
 
 
+# select_best_length()
+
+
 def build_data():
     """
     构建数据集
     :return:
     """
     sample_x_left = train.q1.apply(lambda x: [char for char in x if char]).tolist()
-    sample_x_right = train.q1.apply(lambda x: [char for char in x if char]).tolist()
+    sample_x_right = train.q2.apply(lambda x: [char for char in x if char]).tolist()
     vocabs = {'UNK'}
     for x_left, x_right in zip(sample_x_left, sample_x_right):
         for char in x_left + x_right:
@@ -94,6 +100,8 @@ def train_w2v(datas):
     sents = datas[0][0] + datas[0][1]
     model = Word2Vec(sentences=sents, size=300, min_count=1)
     model.wv.save_word2vec_format('model/token_vec_300.bin', binary=False)
+
+
 def load_pretrained_embedding():
     """
     加载预训练的词向量
@@ -113,7 +121,7 @@ def load_pretrained_embedding():
     return embeddings_dict
 
 
-def build_embedding_matrix(word_dict, embedding_dict,VOCAB_SIZE, EMBEDDING_DIM):
+def build_embedding_matrix(word_dict, embedding_dict, VOCAB_SIZE, EMBEDDING_DIM):
     """
     加载词向量矩阵
     :return:
