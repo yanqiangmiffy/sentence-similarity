@@ -48,8 +48,15 @@ MaLSTM’s architecture — Similar color means the weights are shared betwe
 
 - 词向量是基于字符级别的，在我印象里一般是字符级的效果比较好
 - LSTM训练出来两个问题的语义向量，然后再给相似度函数`MaLSTM similarity function`
+```text
+def exponent_neg_manhattan_distance(sent_left, sent_right):
+    '''基于曼哈顿空间距离计算两个字符串语义空间表示相似度计算'''
+    return K.exp(-K.sum(K.abs(sent_left - sent_right), axis=1, keepdims=True))
+```
+我们仔细看下这个函数的输出是0-1，也就是我们预测概率
 
-训练结果：
+- 训练结果：
+
 在ccks任务上：`acc: 0.8372 - val_loss: 0.4316 - val_acc: 0.8047`
 
 在atec任务上：`loss: 0.3302 - acc: 0.8570 - val_loss: 0.5244 - val_acc: 0.7702`

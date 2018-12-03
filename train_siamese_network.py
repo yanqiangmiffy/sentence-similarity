@@ -107,7 +107,6 @@ def train_model():
         batch_size=BATCH_SIZE,
         epochs=EPOCHS,
     )
-
     draw_train(history)
     model.save(model_path)
     return model
