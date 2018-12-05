@@ -70,3 +70,5 @@ def exponent_neg_manhattan_distance(sent_left, sent_right):
 3. [语义相似度计算各种算法实现汇总](https://github.com/yanleping/similarity)
 4. [距离度量以及python实现(一)](https://www.cnblogs.com/denny402/p/7027954.html)
 5. [从Kaggle赛题: Quora Question Pairs 看文本相似性/相关性](https://zhuanlan.zhihu.com/p/35093355)
+6. [SiameseSentenceSimilarity](https://github.com/liuhuanyong/SiameseSentenceSimilarity)
+7. [QuoraDQBaseline](https://github.com/erogol/QuoraDQBaseline)
