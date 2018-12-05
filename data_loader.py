@@ -8,7 +8,7 @@
 @Description:
 """
 import pandas as pd
-
+import numpy as np
 
 def load_atec():
     """
@@ -45,14 +45,16 @@ def load_ccks():
     train.label = train.label.astype('int')
 
     # 读取验证集
-    dev = pd.read_table('input/ccks/task3_dev.txt', sep='\t')
-    dev.columns = ['q1', 'q2', 'label']
-    dev.label = train.label.astype('int')
+    dev = pd.read_table('input/ccks/task3_dev.txt', sep='\t',header=None)
+    dev.columns = ['line', 'q1', 'q2']
+    dev.drop(columns='line',inplace=True)
+    dev.label = np.nan
 
     # 读取测试集
-    test = pd.read_table('input/ccks/test_with_id.txt', sep='\t')
-    test.columns = ['q1', 'q2', 'label']
-    test.label = train.label.astype('int')
-    return train, dev, test  # (100000, 3) (9999, 3) (109999, 3)
+    test = pd.read_table('input/ccks/test_with_id.txt', sep='\t',header=None)
+    test.columns = ['line', 'q1', 'q2']
+    test.drop(columns='line',inplace=True)
+    test['label'] = np.nan
+    return train,dev,test  # (100000, 3) (9999, 3) (109999, 3)
 
 # load_ccks()
